@@ -1,6 +1,6 @@
 # Build::URI
 
-`Build::URI` provides unform handling of paths (e.g. `/var/lib`), URIs (e.g. `http://www.google.com/search`) and triples (e.g. `git@github.com:ioquatix/build-uri`). It supports logical concatenation of all combinations of these URIs, e.g. `Build::URI['http://www.github.com/ioquatix'] + 'build-uri'` gives `Build::URI['http://www.github.com/ioquatix/build-uri']`, and `Build::URI['var'] + 'lib'` gives `Build::URI['var/lib']`. A `nil` token `Build::URI[nil]` or `Build::URI::EMPTY` is available which always yields the right-hand side when merging.
+`Build::URI` provides unform handling of paths (e.g. `/var/lib`), URIs (e.g. `http://www.google.com/search`) and triples (e.g. `git@github.com:ioquatix/build-uri`). It supports logical concatenation of all combinations of these, and a nil token for convenience.
 
 [![Build Status](https://secure.travis-ci.org/ioquatix/build-uri.svg)](http://travis-ci.org/ioquatix/build-uri)
 [![Code Climate](https://codeclimate.com/github/ioquatix/build-uri.svg)](https://codeclimate.com/github/ioquatix/build-uri)
@@ -22,11 +22,34 @@ Or install it yourself as:
 
 ## Usage
 
-To parse an input:
+Some examples of concatenation:
+
+```ruby
+Build::URI['http://www.github.com/ioquatix'] + 'build-uri'
+# Absolute URI is concatenated with relative path, generating 'http://www.github.com/ioquatix/build-uri'.
+
+Build::URI['var'] + 'lib'
+# Concatenates relative paths, generating 'var/lib'.
+
+Build::URI['/usr/bin'] + '/usr/local/bin'
+# RHS is absolute path, so it is returned.
+
+Build::URI['http://www.github.com/'] + Build::URI['git@github.com:ioquatix/build-uri']
+# RHS is absolute URI, so it is returned.
+
+Build::URI[nil] + 'etc'
+# LHS is nil, so RHS is returned.
+```
+
+A `nil` token `Build::URI[nil]` or `Build::URI::EMPTY` is available which always yields the right-hand side when merging.
+
+### Parsing Input
 
 ```ruby
 uri = Build::URI[value]
 ```
+
+### Local Path
 
 Is it a local path or a (potentially) remote resource?
 
@@ -38,7 +61,7 @@ else
 end
 ```
 
-Concatenate paths:
+### Concatenation
 
 ```ruby
 root = Build::URI["https://www.github.com/ioquatix"]
