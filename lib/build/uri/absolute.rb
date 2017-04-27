@@ -80,7 +80,12 @@ module Build
 			def self.parse(string)
 				if match = PARSER.match(string)
 					self.new(
-						match[:scheme], match[:userinfo], match[:host], match[:path], match[:query], match[:fragment]
+						match[:scheme],
+						match[:userinfo],
+						match[:host],
+						match[:path],
+						match[:query],
+						match[:fragment]
 					).freeze
 				end
 			end
