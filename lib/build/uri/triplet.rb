@@ -47,7 +47,11 @@ module Build
 			
 			def self.parse(string)
 				if match = PARSER.match(string)
-					self.new(*match.values_at(*self.members))
+					self.new(
+						match[:userinfo],
+						match[:host],
+						match[:path],
+					).freeze
 				end
 			end
 		end
