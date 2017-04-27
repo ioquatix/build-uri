@@ -30,10 +30,14 @@ module Build
 			Absolute.parse(string) || Triplet.parse(string) || Relative.new(string)
 		end
 		
+		EMPTY = Relative.new(nil).freeze
+		
 		def self.[](value)
 			case value
 			when Base
 				return value
+			when NilClass
+				return EMPTY
 			else
 				self.parse(value.to_s)
 			end

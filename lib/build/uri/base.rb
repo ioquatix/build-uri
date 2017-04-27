@@ -25,7 +25,7 @@ module Build
 		module Base
 			# @attr directory [Boolean] If true, we consider every path to represent a directory, even if there is no trailing slash. If false, basename of self will be ignored when joining.
 			def merge(other, directory: true)
-				if other.absolute?
+				if self.path.nil? || other.absolute?
 					return other
 				else
 					clone = self.dup
