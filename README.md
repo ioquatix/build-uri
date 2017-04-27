@@ -1,6 +1,6 @@
 # Build::URI
 
-`Build::URI` provides unform handling of file paths (`Build::URI::Relative`), URIs (`Build::URI::Absolute`) and triples (`Build::URI::Triple`).
+`Build::URI` provides unform handling of paths (e.g. `/var/lib`), URIs (e.g. `http://www.google.com/search`) and triples (e.g. `git@github.com:ioquatix/build-uri`). It supports logical concatenation of all combinations of these URIs, e.g. `Build::URI['http://www.github.com/ioquatix'] + 'build-uri'` gives `Build::URI['http://www.github.com/ioquatix/build-uri']`, and `Build::URI['var'] + 'lib'` gives `Build::URI['var/lib']`. A `nil` token `Build::URI[nil]` or `Build::URI::EMPTY` is available which always yields the right-hand side when merging.
 
 [![Build Status](https://secure.travis-ci.org/ioquatix/build-uri.svg)](http://travis-ci.org/ioquatix/build-uri)
 [![Code Climate](https://codeclimate.com/github/ioquatix/build-uri.svg)](https://codeclimate.com/github/ioquatix/build-uri)
@@ -28,7 +28,7 @@ To parse an input:
 uri = Build::URI[value]
 ```
 
-Is it a local file?
+Is it a local path or a (potentially) remote resource?
 
 ```ruby
 if uri.local?
@@ -41,12 +41,20 @@ end
 Concatenate paths:
 
 ```ruby
-root = Build::URI["http://www.google.com/search?q=awesome"]
-path = Build::URI["/login"]
+root = Build::URI["https://www.github.com/ioquatix"]
+path = Build::URI["build-uri"]
 
 (root + path).to_s
-# => "http://www.google.com/login?q=awesome"
+# => "https://www.github.com/ioquatix/build-uri"
 ```
+
+## Caveats
+
+This library does not implement URI encoding/decoding. It is expected that the inputs are valid encoded strings, and thus the outputs will be too.
+
+This is not a general purposes URI handling library, but is focused on providing correct programmatic path concatenation for [teapot].
+
+[teapot]: https://www.github.com/ioquatix/teapot
 
 ## Contributing
 
