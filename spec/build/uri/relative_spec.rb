@@ -18,9 +18,30 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+RSpec.describe Build::URI::Base do
+	let(:a) {Build::URI.parse("/a")}
+	let(:b) {Build::URI.parse("b")}
+	
+	describe '#merge(directory: false)' do
+		subject {a.merge(b, directory: false)}
+		
+		it "should merge ignoring basename" do
+			is_expected.to be == Build::URI.parse("/b")
+		end
+	end
+
+	describe '#merge(directory: true)' do
+		subject {a.merge(b, directory: true)}
+		
+		it "should merge including basename" do
+			is_expected.to be == Build::URI.parse("/a/b")
+		end
+	end
+end
+
 RSpec.describe Build::URI::Relative do
 	describe "two relative paths" do
-		subject {Build::URI.parse("a/b/") + Build::URI.parse("c/d")}
+		subject {Build::URI.parse("a/b") + Build::URI.parse("c/d")}
 		
 		shared_examples "valid relative"
 		
@@ -30,7 +51,7 @@ RSpec.describe Build::URI::Relative do
 	end
 	
 	describe "two absolute paths" do
-		subject {Build::URI.parse("/a/b/") + Build::URI.parse("/c/d")}
+		subject {Build::URI.parse("/a/b") + Build::URI.parse("/c/d")}
 		
 		shared_examples "valid relative"
 		
@@ -40,7 +61,7 @@ RSpec.describe Build::URI::Relative do
 	end
 	
 	describe "absolute uri and relative path" do
-		subject {Build::URI.parse("http://localhost/a/b/") + Build::URI.parse("c/d")}
+		subject {Build::URI.parse("http://localhost/a/b") + Build::URI.parse("c/d")}
 		
 		shared_examples "valid absolute"
 		
@@ -50,7 +71,7 @@ RSpec.describe Build::URI::Relative do
 	end
 	
 	describe "absolute uri and absolute path" do
-		subject {Build::URI.parse("http://localhost/a/b/") + Build::URI.parse("/c/d")}
+		subject {Build::URI.parse("http://localhost/a/b") + Build::URI.parse("/c/d")}
 		
 		shared_examples "valid absolute"
 		

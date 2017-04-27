@@ -20,7 +20,7 @@
 
 RSpec.describe Build::URI::Triplet do
 	describe "absolute triplet and relative path" do
-		subject {Build::URI.parse("git@github.com:ioquatix/") + Build::URI.parse("build-uri")}
+		subject {Build::URI.parse("git@github.com:ioquatix") + Build::URI.parse("build-uri")}
 		
 		shared_examples "valid triplet"
 		
